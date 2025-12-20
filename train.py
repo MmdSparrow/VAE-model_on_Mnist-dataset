@@ -1,5 +1,6 @@
 import os
 import torch
+import matplotlib.pyplot as plt
 import torchvision.transforms as transforms
 
 from torch.optim import Adam
@@ -9,6 +10,7 @@ from torch.utils.data import DataLoader
 from torchvision.utils import save_image
 from models.models_1 import Encoder, Decoder, VAEModel
 from configs.common_configs import DATASET_PATH, BATCH_SIZE, LEARNING_RATE, EPOCHS, OUTPUT_DIRECTORY
+
 
 class Train:
     def __init__(self):
@@ -51,4 +53,10 @@ class Train:
         with torch.no_grad():
             noise = torch.randn(BATCH_SIZE, self.latent_dim).to(self.DEVICE)
             generated_images = self.decoder(noise)
-            save_image(generated_images.view(BATCH_SIZE, 1, 28, 28), os.path.join(OUTPUT_DIRECTORY, 'generated_sample.png'))
+            save_image(generated_images.view(BATCH_SIZE, 1, 28, 28), os.path.join(OUTPUT_DIRECTORY, 'generated_samples.png'))
+            
+            x = generated_images.view(BATCH_SIZE, 28, 28)
+
+            plt.savefig(x[0].cpu().numpy(), os.path.join(OUTPUT_DIRECTORY, 'generated_sample_1.png'))
+            plt.savefig(x[1].cpu().numpy(), os.path.join(OUTPUT_DIRECTORY, 'generated_sample_2.png'))
+            plt.savefig(x[2].cpu().numpy(), os.path.join(OUTPUT_DIRECTORY, 'generated_sample_3.png'))
