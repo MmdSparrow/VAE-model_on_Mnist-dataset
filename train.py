@@ -31,15 +31,15 @@ class Train:
 
             
             loss_function= KLD_loss()
-            optimizer = Adam(model.parameters(), lr=LEARNING_RATE)
-            model.train()
+            optimizer = Adam(self.model.parameters(), lr=LEARNING_RATE)
+            self.model.train()
             for epoch in range(EPOCHS):
                     overall_loss = 0
                     for batch_idx, (x, _) in enumerate(train_loader):
                             x = x.view(BATCH_SIZE, self.x_dim)
                             x = x.to(self.DEVICE)
                             optimizer.zero_grad()
-                            x_hat, mean, log_var = model(x)
+                            x_hat, mean, log_var = self.model(x)
                             loss = loss_function(x, x_hat, mean, log_var)
                             overall_loss += loss.item()
                             loss.backward()
