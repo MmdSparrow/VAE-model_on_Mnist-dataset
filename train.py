@@ -21,11 +21,11 @@ class Train:
             
             self.encoder = Encoder(input_dim=self.x_dim, hidden_dim=self.hidden_dim, latent_dim=self.latent_dim)
             self.decoder = Decoder(latent_dim=self.latent_dim, hidden_dim = self.hidden_dim, output_dim = self.x_dim)
-            self.model = VAEModel(Encoder=self.encoder, Decoder=self.decoder).to(self.DEVICE)
+            self.model = VAEModel(Encoder=self.encoder, Decoder=self.decoder, device=self.DEVICE).to(self.DEVICE)
             
 
     def train_model(self):
-            train_dataset = MNIST(DATASET_PATH, transform=self.mnist_transform, train=True, download=True)
+            train_dataset = MNIST(DATASET_PATH, transform=self.mnist_transform, train=True, download=False)
             train_loader = DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True, **self.data_loader_kwargs)
             
 
