@@ -30,8 +30,6 @@ class Train:
             train_dataset = MNIST(DATASET_PATH, transform=self.mnist_transform, train=True, download=False)
             train_loader = DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True, **self.data_loader_kwargs)
             
-
-            
             loss_function= KLD_loss()
             optimizer = Adam(self.model.parameters(), lr=LEARNING_RATE)
             self.model.train()
@@ -56,7 +54,14 @@ class Train:
             save_image(generated_images.view(BATCH_SIZE, 1, 28, 28), os.path.join(OUTPUT_DIRECTORY, 'generated_samples.png'))
             
             x = generated_images.view(BATCH_SIZE, 28, 28)
-
-            plt.savefig(x[0].cpu().numpy(), os.path.join(OUTPUT_DIRECTORY, 'generated_sample_1.png'))
-            plt.savefig(x[1].cpu().numpy(), os.path.join(OUTPUT_DIRECTORY, 'generated_sample_2.png'))
-            plt.savefig(x[2].cpu().numpy(), os.path.join(OUTPUT_DIRECTORY, 'generated_sample_3.png'))
+            
+            for i in range(3):
+                plt.figure()
+                plt.imshow(x[i].cpu().numpy(), cmap="gray")
+                plt.axis("off")
+                plt.savefig(
+                    os.path.join(OUTPUT_DIRECTORY, f"generated_sample_{i+1}.png"),
+                    bbox_inches="tight",
+                    pad_inches=0
+                )
+                plt.close()
